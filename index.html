@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastermind</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mastermind</h1>
+        </div>
+        <div class="game">
+            <div class="tries">
+                <h3>Tries: 10</h3>
+            </div>
+            <div class="cPrediction">
+                <h2>Generated Number</h2>
+                <span id="1">x</span>
+                <span id="2">x</span>
+                <span id="3">x</span>
+                <span id="4">x</span>
+                <span id="5">x</span>
+            </div>
+            <form class="pPrediction">
+                <h2>Player Prediction</h2>
+                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
+                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
+                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
+                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
+                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
+            </form>
+            <button type="submit">Check</button>
+        </div>
+    </div>
+</body>
+
+</html>
