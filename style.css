@@ -1,33 +1,185 @@
-* {
+/* General Reset */
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #db6b1f;
-}
-
-.container {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    gap: 50px;
+    min-height: 100vh;
 }
 
+/* Container Styling */
+.container {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* Header Styling */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: #6c63ff;
+    margin: 0;
+}
+
+/* Game Section Styling */
 .game {
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tries Section */
+.tries {
+    text-align: center;
+    background-color: #f9f9fc;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.tries h3 {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+/* Generated Number Section */
+.cPrediction {
+    text-align: center;
+    background-color: #f3f3f9;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.cPrediction h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.cPrediction span {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #6c63ff;
+    margin: 0 5px;
+    border-radius: 4px;
+}
+
+/* Player Prediction Section */
+.pPrediction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.pPrediction h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.pPrediction input {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+
+.pPrediction input:focus {
+    outline: 2px solid #6c63ff;
+}
+
+.pPrediction button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: not-allowed;
+    transition: background-color 0.3s;
+}
+
+.pPrediction button:enabled {
+    cursor: pointer;
+    background-color: #4b49bf;
+}
+
+.pPrediction button:hover:enabled {
+    background-color: #3936a3;
+}
+
+/* Difficulty Overlay */
+.difficulty-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    gap: 25px;
-    flex-wrap: wrap;
-    width: 50%;
-    height: 50%;
-    border: 1px solid #000;
-    text-align: center;
+    z-index: 1000;
 }
+
+.difficulty-card {
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.difficulty-card h2 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.difficulty-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.difficulty-button:hover {
+    background-color: #4b49bf;
+}
+
+.difficulty-button:active {
+    background-color: #3936a3;
+}
+

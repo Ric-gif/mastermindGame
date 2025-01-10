@@ -10,31 +10,45 @@
 </head>
 
 <body>
+    <div id="difficulty-card" class="difficulty-overlay">
+        <div class="difficulty-card">
+            <h2>Select Difficulty</h2>
+            <div class="difficulty-buttons">
+                <button class="difficulty-button" data-difficulty="easy">Easy</button>
+                <button class="difficulty-button" data-difficulty="medium">Medium</button>
+                <button class="difficulty-button" data-difficulty="hard">Hard</button>
+                <button class="difficulty-button" data-difficulty="impossible">Impossible</button>
+            </div>
+        </div>
+    </div>
+       
+
     <div class="container">
         <div class="header">
             <h1>Mastermind</h1>
         </div>
         <div class="game">
             <div class="tries">
-                <h3>Tries: 10</h3>
+                <!-- count of correct digits, count of correct digits in the correct position and tries-->
+                <h3>Correct: <span id="correctCount">0</span></h3>
+                <h3>Correct Position: <span id="correctPosition">0</span></h3>
+                <h3>Tries Remaining: <span id="tries"></span></h3>
             </div>
             <div class="cPrediction">
                 <h2>Generated Number</h2>
-                <span id="1">x</span>
-                <span id="2">x</span>
-                <span id="3">x</span>
-                <span id="4">x</span>
-                <span id="5">x</span>
+                <!-- <span id="1">x</span> -->
             </div>
             <form class="pPrediction">
                 <h2>Player Prediction</h2>
-                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
-                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
-                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
-                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
-                <input type="text" maxlength="1" size="1" required oninput="handleInput(this)" pattern="\d*">
+
+                <input type="text" maxlength="1" size="1" required>
+                <input type="text" maxlength="1" size="1" required>
+                <input type="text" maxlength="1" size="1" required>
+                <input type="text" maxlength="1" size="1" required>
+                <input type="text" maxlength="1" size="1" required>
+                <input type="text" maxlength="1" size="1" required>
+                <button type="submit" id="check" disabled>Check</button>
             </form>
-            <button type="submit">Check</button>
         </div>
     </div>
 </body>
