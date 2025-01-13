@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
             score = 0;
             tries = 10;
             correctNumber = generateUniqueNumber();
-            console.log(correctNumber);
+            // console.log(correctNumber);
             updateUI();
             renderInputs();
             difficultyCard.style.display = 'none';
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     let correctNumber = generateUniqueNumber();
-    console.log(correctNumber);
+    // console.log(correctNumber);
 
     const checkInputs = () => {
         const inputs = getInputs();
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 newGameButton.textContent = 'Next level';
                 newGameButton.addEventListener('click', () => {
                     correctNumber = generateUniqueNumber();
-                    console.log(correctNumber);
+                    // console.log(correctNumber);
                     renderInputs();
                     updateUI();
                     replaceButton(newGameButton, checkButton);
