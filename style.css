@@ -76,7 +76,7 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     color: #fff;
-    background-color: #6c63ff;
+    background-color: #b2b1c5;
     margin: 0 5px;
     border-radius: 4px;
 }
@@ -181,5 +181,10 @@ body {
 
 .difficulty-button:active {
     background-color: #3936a3;
+}
+
+.cPrediction span.correct {
+    font-weight: bold;
+    color: green;
 }
 

@@ -26,6 +26,17 @@
     <div class="container">
         <div class="header">
             <h1>Mastermind</h1>
+
+            <div id="status">
+                <p>Level: <span id="level">1</span></p>
+                <p>Difficulty: <span id="difficulty">impossible</span></p>
+                <p>Score: <span id="score">0</span></p>
+            </div>         
+            
+            <div id="highscore">
+                <p>High Score: <span id="highscoreValue">0</span></p>
+            </div>
+            
         </div>
         <div class="game">
             <div class="tries">
@@ -40,13 +51,13 @@
             </div>
             <form class="pPrediction">
                 <h2>Player Prediction</h2>
-
+                <div id="input-container"></div>
+                <!-- <input type="text" maxlength="1" size="1" required>
                 <input type="text" maxlength="1" size="1" required>
                 <input type="text" maxlength="1" size="1" required>
                 <input type="text" maxlength="1" size="1" required>
                 <input type="text" maxlength="1" size="1" required>
-                <input type="text" maxlength="1" size="1" required>
-                <input type="text" maxlength="1" size="1" required>
+                <input type="text" maxlength="1" size="1" required> -->
                 <button type="submit" id="check" disabled>Check</button>
             </form>
         </div>

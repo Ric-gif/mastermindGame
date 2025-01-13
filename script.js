@@ -1,169 +1,236 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-    const inputs = document.querySelectorAll('input[type="text"]');
+    const inputContainer = document.getElementById('input-container');
     const checkButton = document.getElementById('check');
-    const tries = document.getElementById('tries');
-    const correctCount = document.getElementById('correctCount');
-    const correctPositionCount = document.getElementById('correctPosition');
+    const triesElement = document.getElementById('tries');
+    const correctCountElement = document.getElementById('correctCount');
+    const correctPositionElement = document.getElementById('correctPosition');
+    const levelElement = document.getElementById('level');
+    const difficultyElement = document.getElementById('difficulty');
+    const scoreElement = document.getElementById('score');
+    const cPrediction = document.querySelector('.cPrediction');
 
-    // levels of difficulty
-    const easy = 3;
-    const medium = 4;
-    const hard = 5;
-    const impossible = 6;
+    const levels = { easy: 6, medium: 6, hard: 6, impossible: 6 };
+    const difficulties = { easy: 3, medium: 4, hard: 5, impossible: 6 };
 
-    let difficulty = impossible;
+    let difficulty = 'impossible';
+    let level = 1;
+    let score = 0;
+    let tries = 10;
 
-    tries.textContent = 10;
+    const updateUI = () => {
+        levelElement.textContent = level;
+        difficultyElement.textContent = difficulty;
+        triesElement.textContent = tries;
+        scoreElement.textContent = score;
+    };
+
+    updateUI();
 
     const difficultyCard = document.getElementById('difficulty-card');
     const difficultyButtons = document.querySelectorAll('.difficulty-button');
 
+    const getInputs = () => Array.from(document.querySelectorAll('#input-container input'));
+
+    const renderInputs = () => {
+        inputContainer.innerHTML = '';
+        cPrediction.innerHTML = '';
+
+        for (let i = 0; i < difficulties[difficulty]; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = '1';
+            input.size = '1';
+            input.required = true;
+
+            input.addEventListener('input', () => {
+                handleInput(input);
+                validateInputs();
+                checkInputs();
+            });
+            input.addEventListener('click', (event) => event.target.select());
+
+            inputContainer.appendChild(input);
+
+            const span = document.createElement('span');
+            span.textContent = 'X';
+            cPrediction.appendChild(span);
+        }
+
+        checkInputs();
+    };
+
     difficultyButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            const value = event.target.getAttribute('data-difficulty');
-            switch (value) {
-                case 'easy':
-                    difficulty = easy;
-                    break;
-                case 'medium':
-                    difficulty = medium;
-                    break;
-                case 'hard':
-                    difficulty = hard;
-                    break;
-                case 'impossible':
-                    difficulty = impossible;
-                    break;
-            }
+            difficulty = event.target.getAttribute('data-difficulty');
+            level = 1;
+            score = 0;
+            tries = 10;
             correctNumber = generateUniqueNumber();
             console.log(correctNumber);
-            inputs.forEach(input => {
-                input.value = '';
-                input.disabled = false; // Enable all inputs for new game
-            });
-            checkButton.disabled = true;
-
-            // Hide difficulty card after selection
+            updateUI();
+            renderInputs();
             difficultyCard.style.display = 'none';
         });
     });
 
-
-    // Allows only numbers and no other characters and after reaching ones input max length goes to another and vice versa when using backspace
     const handleInput = (currentInput) => {
-        // Allow only digits
         currentInput.value = currentInput.value.replace(/[^0-9]/g, '');
-
-        // Auto-focus to next input if valid digit entered
+    
         if (currentInput.value.length === 1) {
             let nextInput = currentInput.nextElementSibling;
-            while (nextInput && nextInput.tagName !== 'INPUT') {
+            while (nextInput && nextInput.disabled) {
                 nextInput = nextInput.nextElementSibling;
             }
-            if (nextInput) {
-                nextInput.focus();
-                nextInput.select(); // Highlight the next input
-            }
+            if (nextInput) nextInput.focus();
         }
-
-        // Auto-focus to previous input if backspace pressed
+    
+        currentInput.addEventListener('focus', () => {
+            currentInput.select();
+        });
+    
         if (currentInput.value.length === 0) {
             let prevInput = currentInput.previousElementSibling;
-            while (prevInput && prevInput.tagName !== 'INPUT') {
+            while (prevInput && prevInput.disabled) {
                 prevInput = prevInput.previousElementSibling;
             }
-            if (prevInput) {
-                prevInput.focus();
-                prevInput.select(); // Highlight the previous input
-            }
+            if (prevInput) prevInput.focus();
         }
-    }
+    };
 
-    // Add event listeners to inputs to handle input changes
-    inputs.forEach(input => {
-        input.addEventListener('input', () => handleInput(input));
-        input.addEventListener('click', (event) => {
-            event.target.select();
+
+    const validateInputs = () => {
+        const inputs = getInputs();
+        const values = inputs.map(input => input.value);
+
+        inputs.forEach(input => {
+            const value = input.value;
+            const count = values.filter(v => v === value).length;
+
+            if (value && count > 2) {
+                input.value = '';
+            }
         });
-    });
+    };
 
-
-
-    // Generates unique number using rand from 0-9 and joining them together to the length of difficulty
-
-    const rand = (min, max) => {
-        const minCeiled = Math.ceil(min);
-        const maxFloored = Math.floor(max);
-        return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
-    }
-
-    const generateUniqueNumber = _ => {
+    const generateUniqueNumber = () => {
         let digits = new Set();
-        while (digits.size < difficulty) {
-            digits.add(rand(0, 10));
+        while (digits.size < difficulties[difficulty]) {
+            digits.add(Math.floor(Math.random() * 10));
         }
         return Array.from(digits).join('');
-    }
+    };
 
-    // Used for comparing
     let correctNumber = generateUniqueNumber();
-
     console.log(correctNumber);
 
-    // if all inputs are filled enables check button
-    const checkInputs = _ => {
-        checkButton.disabled = Array.from(inputs).some(input => input.value === '');
+    const checkInputs = () => {
+        const inputs = getInputs();
+        checkButton.disabled = inputs.some(input => input.value === '') || !areInputsUnique(inputs);
+    };
+
+    const areInputsUnique = (inputs) => {
+        const values = inputs.map(input => input.value);
+        const counts = values.reduce((acc, val) => {
+            if (val) acc[val] = (acc[val] || 0) + 1;
+            return acc;
+        }, {});
+        return Object.values(counts).every(count => count <= 2);
+    };
+
+    const restartGame = () => {
+        difficultyCard.style.display = 'block';
+        replaceButton(restartButton, checkButton);
+    };
+
+    const replaceButton = (oldButton, newButton) => {
+        oldButton.replaceWith(newButton);
+        checkInputs();
+    };
+
+    const restartButton = document.createElement('button');
+    restartButton.textContent = 'Restart';
+    restartButton.addEventListener('click', restartGame);
+
+    // Add and store high score
+    const highScore = localStorage.getItem('highScore') || 0;
+    const highScoreElement = document.getElementById('highscoreValue');
+    highScoreElement.textContent = highScore;
+
+    const setHighScore = () => {
+        if (score > highScore) {
+            localStorage.setItem('highScore', score);
+            highScoreElement.textContent = score;
+        }
     }
 
-    // if all inputs are filled enables check button
-    inputs.forEach(input => {
-        input.addEventListener('input', checkInputs);
-    });
-
-
     checkButton.addEventListener('click', () => {
-        const pGuess = Array.from(inputs).map(input => input.value).join('');
-        let correctPositions = [];
-        let correctDigits = [];
-
-        for (let i = 0; i < pGuess.length; i++) {
-            if (pGuess[i] === correctNumber[i]) {
-                correctPositions.push(pGuess[i]);
-                inputs[i].disabled = true; // Disable input if correct and in correct position
-            } else if (correctNumber.includes(pGuess[i])) {
-                correctDigits.push(pGuess[i]);
+        const inputs = getInputs();
+        const guess = inputs.map(input => input.value).join('');
+        let correctCount = 0;
+        let correctPosition = 0;
+    
+        for (let i = 0; i < guess.length; i++) {
+            const predictionSpans = cPrediction.children;
+    
+            if (guess[i] === correctNumber[i]) {
+                correctPosition++;
+                inputs[i].disabled = true;
+    
+                predictionSpans[i].textContent = guess[i];
+                predictionSpans[i].classList.add('correct');
+            } else if (correctNumber.includes(guess[i])) {
+                correctCount++;
             }
         }
-
-        console.log(`Guess: ${pGuess}`);
-        console.log(`Correct positions: ${correctPositions.join('')}`);
-        console.log(`Correct digits (wrong positions): ${correctDigits.join('')}`);
-
-        // If guess is correct replace check button with new game button
-        if (correctPositions.length === difficulty) {
-            const newGameButton = document.createElement('button');
-            newGameButton.textContent = 'Next level';
-            newGameButton.addEventListener('click', () => {
-                correctNumber = generateUniqueNumber();
-                console.log(correctNumber);
-                inputs.forEach(input => {
-                    input.value = '';
-                    input.disabled = false; // Enable all inputs for new game
+    
+        correctCountElement.textContent = correctCount;
+        correctPositionElement.textContent = correctPosition;
+    
+        tries--;
+        triesElement.textContent = tries;
+    
+        if (correctPosition === difficulties[difficulty]) {
+            let pointsForLevel = 150 - (10 - tries) * 5; // Deduct points based on tries used
+            score += pointsForLevel;
+    
+            if (level < levels[difficulty]) {
+                level++;
+                tries = 10; // Reset tries for the new level
+                const newGameButton = document.createElement('button');
+                newGameButton.textContent = 'Next level';
+                newGameButton.addEventListener('click', () => {
+                    correctNumber = generateUniqueNumber();
+                    console.log(correctNumber);
+                    renderInputs();
+                    updateUI();
+                    replaceButton(newGameButton, checkButton);
                 });
-                checkButton.disabled = true;
-                newGameButton.replaceWith(checkButton);
-            });
-            checkButton.replaceWith(newGameButton);
+                replaceButton(checkButton, newGameButton);
+            } else {
+                alert('Congratulations! You completed all levels for this difficulty.');
+                score += 100;
+                replaceButton(checkButton, restartButton);
+            }
+        } else if (tries === 0) {
+            alert(`Game over! The correct number was ${correctNumber}`);
+            replaceButton(checkButton, restartButton);
         }
+    
+        if (correctPosition === difficulties[difficulty] || tries === 0) {
+            // Ensure score doesn’t go below zero
+            if (score < 0) {
+                score = 0;
+            }
+        }
+    
+        updateUI();
+        setHighScore();
     });
 
-    // Prevent form submission to avoid page refresh
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
         });
     }
-
 });
