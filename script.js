@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const count = values.filter(v => v === value).length;
 
             if (value && count > 2) {
-                input.value = '';
+                checkButton.disabled = true;
             }
         });
     };
